@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kudgey Project – SolidWorks + OpenCV</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>Kudgey Project</h1>
+    <p class="subtitle">Combining JavaScript, SolidWorks, and OpenCV</p>
+  </header>
+
+  <main>
+    <!-- ---- SolidWorks panel ---- -->
+    <section class="card" id="sw-panel">
+      <h2>SolidWorks Model Parser</h2>
+      <p>Upload an STL or OBJ file exported from SolidWorks to inspect its geometry.</p>
+
+      <label class="file-label" for="sw-file">Choose STL / OBJ file</label>
+      <input type="file" id="sw-file" accept=".stl,.obj" />
+
+      <button id="sw-parse-btn" disabled>Parse Model</button>
+
+      <div id="sw-result" class="result hidden"></div>
+    </section>
+
+    <!-- ---- OpenCV panel ---- -->
+    <section class="card" id="cv-panel">
+      <h2>OpenCV Image Analysis</h2>
+      <p>Upload an image to compute pixel statistics and display a live edge-detection preview using OpenCV.js.</p>
+
+      <label class="file-label" for="cv-file">Choose image (PNG / JPEG)</label>
+      <input type="file" id="cv-file" accept=".png,.jpg,.jpeg,.bmp" />
+
+      <div class="canvas-row">
+        <div>
+          <p class="canvas-label">Original</p>
+          <canvas id="original-canvas"></canvas>
+        </div>
+        <div>
+          <p class="canvas-label">Edge Detection (Sobel)</p>
+          <canvas id="edges-canvas"></canvas>
+        </div>
+      </div>
+
+      <button id="cv-analyze-btn" disabled>Analyze on Server</button>
+      <button id="cv-edges-btn"   disabled>Run Edges (Client / OpenCV.js)</button>
+
+      <div id="cv-result" class="result hidden"></div>
+    </section>
+
+    <!-- ---- Grayscale tool ---- -->
+    <section class="card" id="gray-panel">
+      <h2>RGB → Grayscale Converter</h2>
+      <p>Enter an RGB colour to compute its grayscale equivalent via the ITU-R BT.601 formula.</p>
+
+      <div class="rgb-row">
+        <label>R <input type="number" id="r-val" min="0" max="255" value="128" /></label>
+        <label>G <input type="number" id="g-val" min="0" max="255" value="64"  /></label>
+        <label>B <input type="number" id="b-val" min="0" max="255" value="32"  /></label>
+        <button id="gray-btn">Convert</button>
+      </div>
+
+      <div id="gray-result" class="result hidden"></div>
+    </section>
+  </main>
+
+  <!--
+    OpenCV.js – loaded from the official CDN.
+    To add Subresource Integrity (SRI), download opencv.js, host it locally, and
+    replace this tag with:
+      <script src="opencv.js" ...></script>
+    Or compute the hash and set the integrity attribute:
+      integrity="sha384-<base64-hash>" crossorigin="anonymous"
+    See: https://developer.mozilla.org/en-US/docs/Web/Security/Subresource_Integrity
+  -->
+  <script async src="https://docs.opencv.org/4.8.0/opencv.js"
+          crossorigin="anonymous"
+          onload="onOpenCvReady()"
+          onerror="console.warn('OpenCV.js failed to load; edge detection will be unavailable.')"></script>
+  <script src="app.js"></script>
+</body>
+</html>
